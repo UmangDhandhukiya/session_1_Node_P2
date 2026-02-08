@@ -8,7 +8,7 @@ const createCourse = async (req, res) => {
       return res.status(404).json({ message: "some fields mission" });
     }
     const course = await Course.create(req.body);
-    return res.status(200).json(course);
+    return res.redirect("/")
   } catch (e) {
     return res.status(500).json({ message: e });
   }
@@ -18,7 +18,20 @@ const createCourse = async (req, res) => {
 const allCourses = async (req, res) => {
   try {
     const courseData = await Course.findAll();
-    return res.status(200).json({ courses: courseData });
+    res.render("index", { courses: courseData });
+    // return res.status(200).json({ courses: courseData });
+  } catch (e) {
+    return res.status(500).json({ message: e });
+  }
+};
+
+//select single course
+const singleCourse = async (req, res) => {
+  try {
+    let { id } = req.params;
+    const singleData = await Course.findByPk(id);
+    res.render("index", { singleCourse: singleData });
+    // return res.status(200).json(singleData);
   } catch (e) {
     return res.status(500).json({ message: e });
   }
@@ -26,18 +39,22 @@ const allCourses = async (req, res) => {
 
 //Update course details
 const updateCourse = async (req, res) => {
+
   try {
     let { id } = req.params;
     let { courseName, courseDuration, coursePrice } = req.body;
 
     const course = await Course.findByPk(id);
+    console.log(req.body,course)
+
     if (course) {
-      let updatedCourse = await course.update({
-        courseName: courseName,
-        courseDuration: courseDuration,
-        coursePrice: coursePrice,
+      await course.update({
+        courseName,
+        courseDuration,
+        coursePrice,
       });
-      return res.status(200).json({ message: "updated Successfully" });
+      
+      return res.redirect("/");
     }
   } catch (e) {
     return res.status(500).json({ message: e });
@@ -52,11 +69,20 @@ const deleteCourse = async (req, res) => {
 
     if (course) {
       const deleteRecord = await course.destroy();
-      return res.status(200).json({ message: "deleted successfully", deletedRecord: deleteRecord });
+      // return res
+      //   .status(200)
+      //   .json({ message: "deleted successfully", deletedRecord: deleteRecord });
+      return res.redirect("/");
     }
   } catch (e) {
     return res.status(500).json({ message: e });
   }
 };
 
-module.exports = { createCourse, allCourses, updateCourse, deleteCourse };
+module.exports = {
+  createCourse,
+  allCourses,
+  updateCourse,
+  deleteCourse,
+  singleCourse,
+};
