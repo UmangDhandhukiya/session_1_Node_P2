@@ -1,0 +1,21 @@
+{
+  "name": "express-api-practice",
+  "version": "1.0.0",
+  "description": "Practice for RESTfull APIs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "expressJS",
+    "RESTFull",
+    "APIs"
+  ],
+  "author": "Umang Dhandhukiya",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "express": "^5.2.1",
+    "morgan": "^1.10.1"
+  }
+}
